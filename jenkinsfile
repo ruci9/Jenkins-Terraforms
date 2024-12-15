@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    
+    environment {
+       AWS_ACCESS_KEY_ID     = credentials('87803f01-07e6-43a3-b250-998400a3293a')
+       AWS_SECRET_ACCESS_KEY = credentials('582dc3b4-dccd-4dc9-9af0-dbd0746545cc')
+    }
+
+    stages {
+      stage('fetch_latest_code') {
+        steps {
+        git branch: 'master', url: 'https://github.com/kasturenishant/Jenkins-Terraform.git'
+ }
+      }
+    
+      stage('TF Init&Plan') {
+        steps {
+          sh 'terraform init'
+          sh 'terraform plan'
+          }
+      }
+      
+      stage('Approval') {
+            steps {
+                script {
+                    def userInput = input(
+                        id: 'Approval', message: 'Approve the deployment?', 
+                        parameters: [choice(name: 'Deploy', choices: 'Yes\nNo', description: 'Do you want to deploy?')]
+                    )
+
+                    if (userInput == 'No') {
+                        error 'Deployment aborted by the user'
+                    }
+                }
+            }
+        }
+       stage('TF Apply') {
+        steps {
+          sh 'terraform apply -auto-approve'
+        }
+      
+    } 
+  }
+}
