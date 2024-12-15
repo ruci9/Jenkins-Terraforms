@@ -3,14 +3,14 @@ pipeline {
 
     
     environment {
-       AWS_ACCESS_KEY_ID     = credentials('87803f01-07e6-43a3-b250-998400a3293a')
-       AWS_SECRET_ACCESS_KEY = credentials('582dc3b4-dccd-4dc9-9af0-dbd0746545cc')
+       AWS_ACCESS_KEY_ID     = credentials('f4c19175-1f18-4c0b-89f2-2b0c97fe812b')
+       AWS_SECRET_ACCESS_KEY = credentials('47595df0-679a-4a33-910c-51bc018b3670')
     }
 
     stages {
       stage('fetch_latest_code') {
         steps {
-        git branch: 'master', url: 'https://github.com/kasturenishant/Jenkins-Terraform.git'
+        git branch: 'main', url: 'https://github.com/ruci9/jenkins-terraforms.git'
  }
       }
     
